@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -492,6 +493,7 @@
                 transform: translateX(400px);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
@@ -553,466 +555,486 @@
         }
     </style>
 </head>
+
 <body>
     <button class="save-btn" id="saveBtn">💾 Save All</button>
     <div class="save-notification" id="saveNotification">✓ Data saved successfully!</div>
 
     <div class="main-wrapper">
         <div class="container">
-        <div class="header">
-            <div class="logo">📊</div>
-            <h1>Goal Tracker</h1>
-        </div>
+            <div class="header">
+                <div class="logo">📊</div>
+                <h1>Goal Tracker</h1>
+            </div>
 
-        <div class="slider-group">
-            <label class="slider-label">Algorithms</label>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <input type="range" id="algorithms" min="0" max="100" value="0">
+            <div class="slider-group">
+                <label class="slider-label">Algorithms</label>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <input type="range" id="algorithms" min="0" max="100" value="0">
+                    </div>
+                    <div class="percentage-label" id="algorithms-label">0%</div>
                 </div>
-                <div class="percentage-label" id="algorithms-label">0%</div>
-            </div>
-            <div class="datalist">
-                <span>0%</span>
-                <span>25%</span>
-                <span>50%</span>
-                <span>75%</span>
-                <span>100%</span>
-            </div>
-        </div>
-
-        <div class="slider-group">
-            <label class="slider-label">Data Structures</label>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <input type="range" id="dataStructures" min="0" max="100" value="0">
-                </div>
-                <div class="percentage-label" id="dataStructures-label">0%</div>
-            </div>
-            <div class="datalist">
-                <span>0%</span>
-                <span>25%</span>
-                <span>50%</span>
-                <span>75%</span>
-                <span>100%</span>
-            </div>
-        </div>
-
-        <div class="slider-group">
-            <label class="slider-label">Low Level Design</label>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <input type="range" id="lowLevelDesign" min="0" max="100" value="0">
-                </div>
-                <div class="percentage-label" id="lowLevelDesign-label">0%</div>
-            </div>
-            <div class="datalist">
-                <span>0%</span>
-                <span>25%</span>
-                <span>50%</span>
-                <span>75%</span>
-                <span>100%</span>
-            </div>
-        </div>
-
-        <div class="slider-group">
-            <label class="slider-label">High Level Design</label>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <input type="range" id="highLevelDesign" min="0" max="100" value="0">
-                </div>
-                <div class="percentage-label" id="highLevelDesign-label">0%</div>
-            </div>
-            <div class="datalist">
-                <span>0%</span>
-                <span>25%</span>
-                <span>50%</span>
-                <span>75%</span>
-                <span>100%</span>
-            </div>
-        </div>
-
-        <div class="slider-group">
-            <label class="slider-label">Kubernetes</label>
-            <div class="slider-container">
-                <div class="slider-wrapper">
-                    <input type="range" id="kubernetes" min="0" max="100" value="0">
-                </div>
-                <div class="percentage-label" id="kubernetes-label">0%</div>
-            </div>
-            <div class="datalist">
-                <span>0%</span>
-                <span>25%</span>
-                <span>50%</span>
-                <span>75%</span>
-                <span>100%</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Progress Panel -->
-    <div class="progress-panel" id="progressPanel">
-        <div class="progress-panel-header">
-            <h2 id="panelTitle">Algorithms</h2>
-            <button class="close-btn" id="closePanelBtn">✕</button>
-        </div>
-
-        <div class="progress-bar-container">
-            <div class="progress-bar-label">Overall Progress</div>
-            <div class="progress-bar">
-                <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;">0%</div>
-            </div>
-        </div>
-
-        <div class="table-container">
-            <div class="table-header">
-                <h3>Daily Progress</h3>
-                <div class="btn-group">
-                    <button class="btn btn-primary" id="addRowBtn">+ Add Row</button>
-                    <button class="btn btn-secondary" id="addColBtn">+ Add Column</button>
+                <div class="datalist">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
                 </div>
             </div>
 
-            <div id="tableWrapper">
-                <div class="empty-state">
-                    <p>No progress entries yet</p>
-                    <p>Click "Add Row" to get started</p>
+            <div class="slider-group">
+                <label class="slider-label">Data Structures</label>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <input type="range" id="dataStructures" min="0" max="100" value="0">
+                    </div>
+                    <div class="percentage-label" id="dataStructures-label">0%</div>
+                </div>
+                <div class="datalist">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <label class="slider-label">Low Level Design</label>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <input type="range" id="lowLevelDesign" min="0" max="100" value="0">
+                    </div>
+                    <div class="percentage-label" id="lowLevelDesign-label">0%</div>
+                </div>
+                <div class="datalist">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <label class="slider-label">High Level Design</label>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <input type="range" id="highLevelDesign" min="0" max="100" value="0">
+                    </div>
+                    <div class="percentage-label" id="highLevelDesign-label">0%</div>
+                </div>
+                <div class="datalist">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+
+            <div class="slider-group">
+                <label class="slider-label">Kubernetes</label>
+                <div class="slider-container">
+                    <div class="slider-wrapper">
+                        <input type="range" id="kubernetes" min="0" max="100" value="0">
+                    </div>
+                    <div class="percentage-label" id="kubernetes-label">0%</div>
+                </div>
+                <div class="datalist">
+                    <span>0%</span>
+                    <span>25%</span>
+                    <span>50%</span>
+                    <span>75%</span>
+                    <span>100%</span>
                 </div>
             </div>
         </div>
-    </div>
 
-    <!-- Column Dialog Modal -->
-    <div class="modal" id="columnModal">
-        <div class="modal-content">
-            <div class="modal-header">Add New Column</div>
-            <div class="modal-body">
-                <input type="text" id="columnNameInput" placeholder="Column name" />
+        <!-- Progress Panel -->
+        <div class="progress-panel" id="progressPanel">
+            <div class="progress-panel-header">
+                <h2 id="panelTitle">Algorithms</h2>
+                <button class="close-btn" id="closePanelBtn">✕</button>
             </div>
-            <div class="modal-footer">
-                <button class="btn btn-cancel" id="cancelColBtn">Cancel</button>
-                <button class="btn btn-primary btn-save" id="confirmColBtn">Add</button>
+
+            <div class="progress-bar-container">
+                <div class="progress-bar-label">Overall Progress</div>
+                <div class="progress-bar">
+                    <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;">0%</div>
+                </div>
+            </div>
+
+            <div class="table-container">
+                <div class="table-header">
+                    <h3>Daily Progress</h3>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" id="addRowBtn">+ Add Row</button>
+                        <button class="btn btn-secondary" id="addColBtn">+ Add Column</button>
+                    </div>
+                </div>
+
+                <div id="tableWrapper">
+                    <div class="empty-state">
+                        <p>No progress entries yet</p>
+                        <p>Click "Add Row" to get started</p>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
 
-    <script>
-        // State Management
-        const state = {
-            sliders: {
-                algorithms: 0,
-                dataStructures: 0,
-                lowLevelDesign: 0,
-                highLevelDesign: 0,
-                kubernetes: 0
-            },
-            progressData: {
+        <!-- Column Dialog Modal -->
+        <div class="modal" id="columnModal">
+            <div class="modal-content">
+                <div class="modal-header">Add New Column</div>
+                <div class="modal-body">
+                    <input type="text" id="columnNameInput" placeholder="Column name" />
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-cancel" id="cancelColBtn">Cancel</button>
+                    <button class="btn btn-primary btn-save" id="confirmColBtn">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            const state = {
+                sliders: {
+                    algorithms: 0,
+                    dataStructures: 0,
+                    lowLevelDesign: 0,
+                    highLevelDesign: 0,
+                    kubernetes: 0
+                },
+                progressData: {
+                    algorithms: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                    dataStructures: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                    lowLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                    highLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                    kubernetes: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] }
+                },
+                currentPanel: null
+            };
+
+            const sliders = [
+                { id: 'algorithms', labelId: 'algorithms-label', name: 'Algorithms' },
+                { id: 'dataStructures', labelId: 'dataStructures-label', name: 'Data Structures' },
+                { id: 'lowLevelDesign', labelId: 'lowLevelDesign-label', name: 'Low Level Design' },
+                { id: 'highLevelDesign', labelId: 'highLevelDesign-label', name: 'High Level Design' },
+                { id: 'kubernetes', labelId: 'kubernetes-label', name: 'Kubernetes' }
+            ];
+
+            const $ = id => document.getElementById(id);
+            const progressPanel = $('progressPanel');
+            const panelTitle = $('panelTitle');
+            const progressBarFill = $('progressBarFill');
+            const tableWrapper = $('tableWrapper');
+            const addRowBtn = $('addRowBtn');
+            const addColBtn = $('addColBtn');
+            const closePanelBtn = $('closePanelBtn');
+            const saveBtn = $('saveBtn');
+            const saveNotification = $('saveNotification');
+            const columnModal = $('columnModal');
+            const columnNameInput = $('columnNameInput');
+            const confirmColBtn = $('confirmColBtn');
+            const cancelColBtn = $('cancelColBtn');
+
+            function updateSliderBackground(slider) {
+                const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+                slider.style.background = `linear-gradient(to right, #667eea 0%, #764ba2 ${value}%, #e0e0e0 ${value}%, #e0e0e0 100%)`;
+            }
+
+            function openProgressPanel(sliderId, sliderName) {
+                state.currentPanel = sliderId;
+                panelTitle.textContent = sliderName;
+                progressPanel.classList.add('active');
+                const percentage = state.sliders[sliderId];
+                progressBarFill.style.width = `${percentage}%`;
+                progressBarFill.textContent = `${percentage}%`;
+                renderTable();
+            }
+
+            function closeProgressPanel() {
+                progressPanel.classList.remove('active');
+                state.currentPanel = null;
+            }
+
+            function renderTable() {
+                if (!state.currentPanel) return;
+
+                const data = state.progressData[state.currentPanel];
+                if (data.rows.length === 0) {
+                    tableWrapper.innerHTML = '<div class="empty-state"><p>No progress entries yet</p><p>Click "Add Row" to get started</p></div>';
+                    return;
+                }
+
+                const table = document.createElement('table');
+                const headerRow = document.createElement('tr');
+                
+                data.columns.forEach(col => {
+                    const th = document.createElement('th');
+                    th.textContent = col;
+                    headerRow.appendChild(th);
+                });
+                
+                const actionTh = document.createElement('th');
+                actionTh.textContent = 'Action';
+                headerRow.appendChild(actionTh);
+                table.appendChild(headerRow);
+
+                data.rows.forEach((row, rowIndex) => {
+                    const tr = document.createElement('tr');
+                    
+                    row.forEach((cell, colIndex) => {
+                        const td = document.createElement('td');
+                        const input = document.createElement('input');
+                        input.type = 'text';
+                        input.value = cell;
+                        input.addEventListener('change', e => {
+                            data.rows[rowIndex][colIndex] = e.target.value;
+                        });
+                        td.appendChild(input);
+                        tr.appendChild(td);
+                    });
+
+                    const actionTd = document.createElement('td');
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.className = 'btn btn-delete';
+                    deleteBtn.textContent = '🗑️ Delete';
+                    deleteBtn.addEventListener('click', () => {
+                        data.rows.splice(rowIndex, 1);
+                        renderTable();
+                    });
+                    actionTd.appendChild(deleteBtn);
+                    tr.appendChild(actionTd);
+                    table.appendChild(tr);
+                });
+
+                tableWrapper.innerHTML = '';
+                tableWrapper.appendChild(table);
+            }
+
+            sliders.forEach(slider => {
+                const element = $(slider.id);
+                const labelElement = $(slider.labelId);
+                const sliderLabel = labelElement.parentElement.parentElement.querySelector('.slider-label');
+
+                element.addEventListener('input', function() {
+                    const value = parseInt(this.value);
+                    labelElement.textContent = `${value}%`;
+                    state.sliders[slider.id] = value;
+                    updateSliderBackground(this);
+
+                    if (state.currentPanel === slider.id) {
+                        progressBarFill.style.width = `${value}%`;
+                        progressBarFill.textContent = `${value}%`;
+                    }
+                });
+
+                sliderLabel.addEventListener('click', () => openProgressPanel(slider.id, slider.name));
+                updateSliderBackground(element);
+            });
+
+            addRowBtn.addEventListener('click', () => {
+                if (!state.currentPanel) return;
+                const data = state.progressData[state.currentPanel];
+                data.rows.push(new Array(data.columns.length).fill(''));
+                renderTable();
+            });
+
+            addColBtn.addEventListener('click', () => {
+                columnModal.classList.add('active');
+                columnNameInput.value = '';
+                columnNameInput.focus();
+            });
+
+            confirmColBtn.addEventListener('click', () => {
+                const columnName = columnNameInput.value.trim();
+                if (!columnName || !state.currentPanel) {
+                    alert('Please enter a column name');
+                    return;
+                }
+                const data = state.progressData[state.currentPanel];
+                data.columns.push(columnName);
+                data.rows.forEach(row => row.push(''));
+                columnModal.classList.remove('active');
+                renderTable();
+            });
+
+            cancelColBtn.addEventListener('click', () => columnModal.classList.remove('active'));
+            columnNameInput.addEventListener('keypress', e => e.key === 'Enter' && confirmColBtn.click());
+            closePanelBtn.addEventListener('click', closeProgressPanel);
+            columnModal.addEventListener('click', e => e.target === columnModal && columnModal.classList.remove('active'));
+            progressPanel.addEventListener('click', e => e.target === progressPanel && closeProgressPanel());
+        </script>
+        <script type="module">
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-app.js";
+            import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-analytics.js";
+            import { getFirestore, doc, setDoc, getDoc, collection } from "https://www.gstatic.com/firebasejs/12.6.0/firebase-firestore.js";
+
+            const firebaseConfig = {
+                apiKey: "AIzaSyCFyqtRhXJRiQKgbp2mL48aRYLOKmdVQmw",
+                authDomain: "goal-trackerdb.firebaseapp.com",
+                projectId: "goal-trackerdb",
+                storageBucket: "goal-trackerdb.firebasestorage.app",
+                messagingSenderId: "1078222451786",
+                appId: "1:1078222451786:web:cdaddf5b6798b3216162b3",
+                measurementId: "G-JZHCYSTS9C"
+            };
+
+            const app = initializeApp(firebaseConfig);
+            const analytics = getAnalytics(app);
+            const db = getFirestore(app);
+
+            const defaultProgressData = {
                 algorithms: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
                 dataStructures: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
                 lowLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
                 highLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
                 kubernetes: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] }
-            },
-            currentPanel: null
-        };
+            };
 
-        // UI Elements
-        const sliders = [
-            { id: 'algorithms', labelId: 'algorithms-label', name: 'Algorithms' },
-            { id: 'dataStructures', labelId: 'dataStructures-label', name: 'Data Structures' },
-            { id: 'lowLevelDesign', labelId: 'lowLevelDesign-label', name: 'Low Level Design' },
-            { id: 'highLevelDesign', labelId: 'highLevelDesign-label', name: 'High Level Design' },
-            { id: 'kubernetes', labelId: 'kubernetes-label', name: 'Kubernetes' }
-        ];
+            function convertRowsToObjects(rows) {
+                return rows.map(row => {
+                    const obj = {};
+                    row.forEach((cell, idx) => obj[idx] = cell);
+                    return obj;
+                });
+            }
 
-        const progressPanel = document.getElementById('progressPanel');
-        const panelTitle = document.getElementById('panelTitle');
-        const progressBarFill = document.getElementById('progressBarFill');
-        const tableWrapper = document.getElementById('tableWrapper');
-        const addRowBtn = document.getElementById('addRowBtn');
-        const addColBtn = document.getElementById('addColBtn');
-        const closePanelBtn = document.getElementById('closePanelBtn');
-        const saveBtn = document.getElementById('saveBtn');
-        const saveNotification = document.getElementById('saveNotification');
-        const columnModal = document.getElementById('columnModal');
-        const columnNameInput = document.getElementById('columnNameInput');
-        const confirmColBtn = document.getElementById('confirmColBtn');
-        const cancelColBtn = document.getElementById('cancelColBtn');
+            function convertRowsToArrays(rows) {
+                return rows.map(rowObj => {
+                    if (Array.isArray(rowObj)) return rowObj;
+                    return Object.keys(rowObj)
+                        .sort((a, b) => Number(a) - Number(b))
+                        .map(idx => rowObj[idx]);
+                });
+            }
 
-        // Initialize Sliders
-        sliders.forEach(slider => {
-            const element = document.getElementById(slider.id);
-            const labelElement = document.getElementById(slider.labelId);
-            const sliderLabel = labelElement.parentElement.parentElement.querySelector('.slider-label');
-
-            // Update label on input
-            element.addEventListener('input', function() {
-                labelElement.textContent = this.value + '%';
-                state.sliders[slider.id] = parseInt(this.value);
-                updateSliderBackground(this);
+            async function saveAllData() {
+                const dataToSave = {
+                    sliders: state.sliders,
+                    progressData: state.progressData,
+                    timestamp: new Date().toISOString()
+                };
                 
-                // Update progress bar if panel is open for this slider
-                if (state.currentPanel === slider.id) {
-                    const percentage = parseInt(this.value);
-                    progressBarFill.style.width = percentage + '%';
-                    progressBarFill.textContent = percentage + '%';
+                try {
+                    localStorage.setItem('goalTrackerData', JSON.stringify(dataToSave));
+                } catch (e) {
+                    console.error("localStorage save failed:", e);
                 }
-            });
 
-            // Click on title to open panel
-            sliderLabel.addEventListener('click', function() {
-                openProgressPanel(slider.id, slider.name);
-            });
-
-            // Initialize
-            updateSliderBackground(element);
-        });
-
-        // Update slider background gradient
-        function updateSliderBackground(slider) {
-            const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
-            slider.style.background = `linear-gradient(to right, #667eea 0%, #764ba2 ${value}%, #e0e0e0 ${value}%, #e0e0e0 100%)`;
-        }
-
-        // Progress Panel Functions
-        function openProgressPanel(sliderId, sliderName) {
-            state.currentPanel = sliderId;
-            panelTitle.textContent = sliderName;
-            progressPanel.classList.add('active');
-
-            // Update progress bar
-            const percentage = state.sliders[sliderId];
-            progressBarFill.style.width = percentage + '%';
-            progressBarFill.textContent = percentage + '%';
-
-            // Render table
-            renderTable();
-        }
-
-        function closeProgressPanel() {
-            progressPanel.classList.remove('active');
-            state.currentPanel = null;
-        }
-
-        function renderTable() {
-            if (!state.currentPanel) return;
-
-            const data = state.progressData[state.currentPanel];
-            tableWrapper.innerHTML = '';
-
-            if (data.rows.length === 0) {
-                tableWrapper.innerHTML = `
-                    <div class="empty-state">
-                        <p>No progress entries yet</p>
-                        <p>Click "Add Row" to get started</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const table = document.createElement('table');
-            
-            // Header
-            const headerRow = document.createElement('tr');
-            data.columns.forEach(col => {
-                const th = document.createElement('th');
-                th.textContent = col;
-                headerRow.appendChild(th);
-            });
-            const actionTh = document.createElement('th');
-            actionTh.textContent = 'Action';
-            headerRow.appendChild(actionTh);
-            table.appendChild(headerRow);
-
-            // Rows
-            data.rows.forEach((row, rowIndex) => {
-                const tr = document.createElement('tr');
-                row.forEach((cell, colIndex) => {
-                    const td = document.createElement('td');
-                    const input = document.createElement('input');
-                    input.type = 'text';
-                    input.value = cell;
-                    input.addEventListener('change', (e) => {
-                        data.rows[rowIndex][colIndex] = e.target.value;
+                try {
+                    const progressDataForFirestore = {};
+                    for (const key in state.progressData) {
+                        const section = state.progressData[key];
+                        progressDataForFirestore[key] = {
+                            columns: section.columns,
+                            rows: convertRowsToObjects(section.rows)
+                        };
+                    }
+                    
+                    await setDoc(doc(collection(db, "goalTracker"), "userData"), {
+                        sliders: state.sliders,
+                        progressData: progressDataForFirestore,
+                        timestamp: new Date().toISOString()
                     });
-                    td.appendChild(input);
-                    tr.appendChild(td);
-                });
-
-                const actionTd = document.createElement('td');
-                const deleteBtn = document.createElement('button');
-                deleteBtn.className = 'btn btn-delete';
-                deleteBtn.textContent = '🗑️ Delete';
-                deleteBtn.addEventListener('click', () => {
-                    data.rows.splice(rowIndex, 1);
-                    renderTable();
-                });
-                actionTd.appendChild(deleteBtn);
-                tr.appendChild(actionTd);
-
-                table.appendChild(tr);
-            });
-
-            tableWrapper.appendChild(table);
-        }
-
-        // Add Row
-        addRowBtn.addEventListener('click', () => {
-            if (!state.currentPanel) return;
-            const data = state.progressData[state.currentPanel];
-            const newRow = new Array(data.columns.length).fill('');
-            data.rows.push(newRow);
-            renderTable();
-        });
-
-        // Add Column
-        addColBtn.addEventListener('click', () => {
-            columnModal.classList.add('active');
-            columnNameInput.value = '';
-            columnNameInput.focus();
-        });
-
-        confirmColBtn.addEventListener('click', () => {
-            const columnName = columnNameInput.value.trim();
-            if (!columnName || !state.currentPanel) {
-                alert('Please enter a column name');
-                return;
-            }
-
-            const data = state.progressData[state.currentPanel];
-            data.columns.push(columnName);
-            data.rows.forEach(row => row.push(''));
-            
-            columnModal.classList.remove('active');
-            renderTable();
-        });
-
-        cancelColBtn.addEventListener('click', () => {
-            columnModal.classList.remove('active');
-        });
-
-        columnNameInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                confirmColBtn.click();
-            }
-        });
-
-        // Close Panel
-        closePanelBtn.addEventListener('click', closeProgressPanel);
-
-        // IndexedDB Setup
-        let db;
-        const dbName = 'GoalTrackerDB';
-        const storeName = 'trackerData';
-
-        function initDB() {
-            return new Promise((resolve, reject) => {
-                const request = indexedDB.open(dbName, 1);
-
-                request.onerror = () => reject(request.error);
-                request.onsuccess = () => {
-                    db = request.result;
-                    resolve();
-                };
-
-                request.onupgradeneeded = (event) => {
-                    const database = event.target.result;
-                    if (!database.objectStoreNames.contains(storeName)) {
-                        database.createObjectStore(storeName);
-                    }
-                };
-            });
-        }
-
-        // Save All Data using IndexedDB
-        function saveAllData() {
-            if (!db) return;
-
-            const dataToSave = {
-                sliders: state.sliders,
-                progressData: state.progressData,
-                timestamp: new Date().toISOString()
-            };
-
-            const transaction = db.transaction([storeName], 'readwrite');
-            const objectStore = transaction.objectStore(storeName);
-            const request = objectStore.put(dataToSave, 'goalTrackerData');
-
-            request.onsuccess = () => {
-                // Show notification
+                    console.log("✓ Firestore save successful");
+                } catch (error) {
+                    console.error("✗ Firestore save failed (localStorage active):", error);
+                }
+                
                 saveNotification.classList.add('show');
-                setTimeout(() => {
-                    saveNotification.classList.remove('show');
-                }, 3000);
-            };
+                setTimeout(() => saveNotification.classList.remove('show'), 3000);
+            }
 
-            request.onerror = () => {
-                console.error('Failed to save data:', request.error);
-            };
-        }
-
-        saveBtn.addEventListener('click', saveAllData);
-
-        // Load Data from IndexedDB
-        function loadAllData() {
-            if (!db) return;
-
-            const transaction = db.transaction([storeName], 'readonly');
-            const objectStore = transaction.objectStore(storeName);
-            const request = objectStore.get('goalTrackerData');
-
-            request.onsuccess = () => {
-                const data = request.result;
-                if (data) {
-                    try {
+            async function loadAllData() {
+                let dataLoaded = false;
+                
+                try {
+                    const docRef = doc(collection(db, "goalTracker"), "userData");
+                    const docSnap = await getDoc(docRef);
+                    
+                    if (docSnap.exists()) {
+                        const data = docSnap.data();
                         state.sliders = data.sliders || state.sliders;
-                        state.progressData = data.progressData || state.progressData;
-
-                        // Update UI
-                        sliders.forEach(slider => {
-                            const element = document.getElementById(slider.id);
-                            const labelElement = document.getElementById(slider.labelId);
-                            element.value = state.sliders[slider.id];
-                            labelElement.textContent = state.sliders[slider.id] + '%';
-                            updateSliderBackground(element);
-                        });
-                    } catch (e) {
-                        console.error('Failed to parse data:', e);
+                        
+                        if (data.progressData) {
+                            for (const key in defaultProgressData) {
+                                if (data.progressData[key]) {
+                                    const section = data.progressData[key];
+                                    section.columns = section.columns || defaultProgressData[key].columns;
+                                    section.rows = convertRowsToArrays(section.rows || []);
+                                    state.progressData[key] = section;
+                                } else {
+                                    state.progressData[key] = defaultProgressData[key];
+                                }
+                            }
+                        } else {
+                            state.progressData = defaultProgressData;
+                        }
+                        
+                        dataLoaded = true;
+                        console.log("✓ Firestore load successful");
+                    }
+                } catch (error) {
+                    console.error("✗ Firestore load failed, using localStorage:", error);
+                }
+                
+                if (!dataLoaded) {
+                    try {
+                        const savedData = localStorage.getItem('goalTrackerData');
+                        if (savedData) {
+                            const data = JSON.parse(savedData);
+                            state.sliders = data.sliders || state.sliders;
+                            
+                            if (data.progressData) {
+                                for (const key in defaultProgressData) {
+                                    if (data.progressData[key]) {
+                                        const section = data.progressData[key];
+                                        section.columns = section.columns || defaultProgressData[key].columns;
+                                        section.rows = section.rows || [];
+                                        state.progressData[key] = section;
+                                    } else {
+                                        state.progressData[key] = defaultProgressData[key];
+                                    }
+                                }
+                            } else {
+                                state.progressData = defaultProgressData;
+                            }
+                            
+                            dataLoaded = true;
+                            console.log("✓ localStorage load successful");
+                        }
+                    } catch (error) {
+                        console.error("✗ localStorage load failed:", error);
                     }
                 }
-            };
-
-            request.onerror = () => {
-                console.error('Failed to load data:', request.error);
-            };
-        }
-
-        // Auto-save on unload
-        window.addEventListener('beforeunload', saveAllData);
-
-        // Initialize DB and Load on page load
-        window.addEventListener('load', async () => {
-            try {
-                await initDB();
-                loadAllData();
-            } catch (e) {
-                console.error('Failed to initialize database:', e);
+                
+                if (dataLoaded) {
+                    sliders.forEach(slider => {
+                        const element = document.getElementById(slider.id);
+                        const labelElement = document.getElementById(slider.labelId);
+                        element.value = state.sliders[slider.id];
+                        labelElement.textContent = `${state.sliders[slider.id]}%`;
+                        updateSliderBackground(element);
+                    });
+                }
             }
-        });
 
-        // Close modal when clicking outside
-        columnModal.addEventListener('click', (e) => {
-            if (e.target === columnModal) {
-                columnModal.classList.remove('active');
-            }
-        });
+            window.addEventListener('beforeunload', saveAllData);
+            window.addEventListener('load', async () => {
+                try {
+                    await loadAllData();
+                } catch (e) {
+                    console.error('Initialization failed:', e);
+                }
+            });
 
-        // Close panel when clicking outside
-        progressPanel.addEventListener('click', (e) => {
-            if (e.target === progressPanel) {
-                closeProgressPanel();
-            }
-        });
-    </script>
+            saveBtn.addEventListener('click', saveAllData);
+        </script>
 </body>
+
 </html>
