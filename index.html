@@ -69,6 +69,86 @@
             font-weight: 600;
         }
 
+        .profile-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8ecf1 100%);
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .profile-header h3 {
+            font-size: 18px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .profile-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .profile-select {
+            flex: 1;
+            min-width: 150px;
+            padding: 10px 15px;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            background: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .profile-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .profile-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .profile-btn.add {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .profile-btn.add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .profile-btn.delete {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+
+        .profile-btn.delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .profile-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
         .slider-group {
             margin-bottom: 30px;
         }
@@ -567,6 +647,19 @@
                 <h1>Goal Tracker</h1>
             </div>
 
+            <div class="profile-section">
+                <div class="profile-header">
+                    <h3>👤 Profile</h3>
+                </div>
+                <div class="profile-controls">
+                    <select class="profile-select" id="profileSelect">
+                        <option value="default">Default Profile</option>
+                    </select>
+                    <button class="profile-btn add" id="addProfileBtn">➕ New</button>
+                    <button class="profile-btn delete" id="deleteProfileBtn">🗑️ Delete</button>
+                </div>
+            </div>
+
             <div class="slider-group">
                 <label class="slider-label">Algorithms</label>
                 <div class="slider-container">
@@ -700,21 +793,30 @@
         </div>
 
         <script>
+            const profiles = JSON.parse(localStorage.getItem('goalTrackerProfiles')) || {
+                default: {
+                    sliders: {
+                        algorithms: 0,
+                        dataStructures: 0,
+                        lowLevelDesign: 0,
+                        highLevelDesign: 0,
+                        kubernetes: 0
+                    },
+                    progressData: {
+                        algorithms: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                        dataStructures: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                        lowLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                        highLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                        kubernetes: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] }
+                    }
+                }
+            };
+
+            let currentProfile = localStorage.getItem('goalTrackerCurrentProfile') || 'default';
+            
             const state = {
-                sliders: {
-                    algorithms: 0,
-                    dataStructures: 0,
-                    lowLevelDesign: 0,
-                    highLevelDesign: 0,
-                    kubernetes: 0
-                },
-                progressData: {
-                    algorithms: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
-                    dataStructures: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
-                    lowLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
-                    highLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
-                    kubernetes: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] }
-                },
+                sliders: { ...profiles[currentProfile].sliders },
+                progressData: JSON.parse(JSON.stringify(profiles[currentProfile].progressData)),
                 currentPanel: null
             };
 
@@ -740,6 +842,9 @@
             const columnNameInput = $('columnNameInput');
             const confirmColBtn = $('confirmColBtn');
             const cancelColBtn = $('cancelColBtn');
+            const profileSelect = $('profileSelect');
+            const addProfileBtn = $('addProfileBtn');
+            const deleteProfileBtn = $('deleteProfileBtn');
 
             function updateSliderBackground(slider) {
                 const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
@@ -790,8 +895,25 @@
                     row.forEach((cell, colIndex) => {
                         const td = document.createElement('td');
                         const input = document.createElement('input');
-                        input.type = 'text';
-                        input.value = cell;
+                        const colName = data.columns[colIndex].toLowerCase();
+                        
+                        // Use date input for Date columns
+                        if (colName.includes('date')) {
+                            input.type = 'date';
+                            input.value = cell || new Date().toISOString().split('T')[0];
+                        } 
+                        // Use number input for Hour/Hours columns
+                        else if (colName.includes('hour')) {
+                            input.type = 'number';
+                            input.min = '0';
+                            input.step = '1';
+                            input.value = cell || '0';
+                        } 
+                        else {
+                            input.type = 'text';
+                            input.value = cell;
+                        }
+                        
                         input.addEventListener('change', e => {
                             data.rows[rowIndex][colIndex] = e.target.value;
                         });
@@ -815,6 +937,114 @@
                 tableWrapper.innerHTML = '';
                 tableWrapper.appendChild(table);
             }
+
+            function loadProfilesList() {
+                profileSelect.innerHTML = '';
+                Object.keys(profiles).sort().forEach(profileName => {
+                    const option = document.createElement('option');
+                    option.value = profileName;
+                    option.textContent = profileName === 'default' ? 'Default Profile' : profileName;
+                    option.selected = profileName === currentProfile;
+                    profileSelect.appendChild(option);
+                });
+                deleteProfileBtn.disabled = currentProfile === 'default' || Object.keys(profiles).length === 1;
+            }
+
+            function switchProfile(profileName) {
+                if (!profiles[profileName]) return;
+                
+                currentProfile = profileName;
+                state.sliders = { ...profiles[profileName].sliders };
+                state.progressData = JSON.parse(JSON.stringify(profiles[profileName].progressData));
+                state.currentPanel = null;
+                
+                localStorage.setItem('goalTrackerCurrentProfile', currentProfile);
+                
+                sliders.forEach(slider => {
+                    const element = $(slider.id);
+                    const labelElement = $(slider.labelId);
+                    element.value = state.sliders[slider.id] || 0;
+                    labelElement.textContent = `${element.value}%`;
+                    updateSliderBackground(element);
+                });
+                
+                if (progressPanel.classList.contains('open')) {
+                    closeProgressPanel();
+                }
+                
+                loadProfilesList();
+            }
+
+            function saveProfiles() {
+                profiles[currentProfile] = {
+                    sliders: { ...state.sliders },
+                    progressData: JSON.parse(JSON.stringify(state.progressData))
+                };
+                localStorage.setItem('goalTrackerProfiles', JSON.stringify(profiles));
+            }
+
+            function addProfile() {
+                const profileName = prompt('Enter profile name:');
+                if (!profileName) return;
+                
+                const trimmedName = profileName.trim();
+                if (!trimmedName) {
+                    alert('Profile name cannot be empty!');
+                    return;
+                }
+                
+                if (profiles[trimmedName]) {
+                    alert('Profile already exists!');
+                    return;
+                }
+                
+                profiles[trimmedName] = {
+                    sliders: {
+                        algorithms: 0,
+                        dataStructures: 0,
+                        lowLevelDesign: 0,
+                        highLevelDesign: 0,
+                        kubernetes: 0
+                    },
+                    progressData: {
+                        algorithms: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                        dataStructures: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                        lowLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                        highLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                        kubernetes: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] }
+                    }
+                };
+                
+                localStorage.setItem('goalTrackerProfiles', JSON.stringify(profiles));
+                switchProfile(trimmedName);
+            }
+
+            function deleteProfile() {
+                if (currentProfile === 'default') {
+                    alert('Cannot delete default profile!');
+                    return;
+                }
+                
+                if (Object.keys(profiles).length === 1) {
+                    alert('Cannot delete the last profile!');
+                    return;
+                }
+                
+                if (!confirm(`Delete profile "${currentProfile}"? This cannot be undone.`)) {
+                    return;
+                }
+                
+                delete profiles[currentProfile];
+                localStorage.setItem('goalTrackerProfiles', JSON.stringify(profiles));
+                
+                currentProfile = 'default';
+                localStorage.setItem('goalTrackerCurrentProfile', currentProfile);
+                switchProfile(currentProfile);
+            }
+
+            profileSelect.addEventListener('change', () => switchProfile(profileSelect.value));
+            addProfileBtn.addEventListener('click', addProfile);
+            deleteProfileBtn.addEventListener('click', deleteProfile);
 
             sliders.forEach(slider => {
                 const element = $(slider.id);
@@ -840,7 +1070,19 @@
             addRowBtn.addEventListener('click', () => {
                 if (!state.currentPanel) return;
                 const data = state.progressData[state.currentPanel];
-                data.rows.push(new Array(data.columns.length).fill(''));
+                const newRow = new Array(data.columns.length).fill('');
+                
+                // Auto-fill columns based on type
+                data.columns.forEach((col, idx) => {
+                    const colName = col.toLowerCase();
+                    if (colName.includes('date')) {
+                        newRow[idx] = new Date().toISOString().split('T')[0];
+                    } else if (colName.includes('hour')) {
+                        newRow[idx] = '0';
+                    }
+                });
+                
+                data.rows.push(newRow);
                 renderTable();
             });
 
@@ -914,6 +1156,8 @@
             }
 
             async function saveAllData() {
+                saveProfiles();
+                
                 const dataToSave = {
                     sliders: state.sliders,
                     progressData: state.progressData,
@@ -936,7 +1180,7 @@
                         };
                     }
                     
-                    await setDoc(doc(collection(db, "goalTracker"), "userData"), {
+                    await setDoc(doc(collection(db, "goalTracker"), currentProfile), {
                         sliders: state.sliders,
                         progressData: progressDataForFirestore,
                         timestamp: new Date().toISOString()
@@ -954,7 +1198,7 @@
                 let dataLoaded = false;
                 
                 try {
-                    const docRef = doc(collection(db, "goalTracker"), "userData");
+                    const docRef = doc(collection(db, "goalTracker"), currentProfile);
                     const docSnap = await getDoc(docRef);
                     
                     if (docSnap.exists()) {
@@ -975,6 +1219,12 @@
                         } else {
                             state.progressData = defaultProgressData;
                         }
+                        
+                        profiles[currentProfile] = {
+                            sliders: { ...state.sliders },
+                            progressData: JSON.parse(JSON.stringify(state.progressData))
+                        };
+                        localStorage.setItem('goalTrackerProfiles', JSON.stringify(profiles));
                         
                         dataLoaded = true;
                         console.log("✓ Firestore load successful");
@@ -1027,6 +1277,7 @@
             window.addEventListener('beforeunload', saveAllData);
             window.addEventListener('load', async () => {
                 try {
+                    loadProfilesList();
                     await loadAllData();
                 } catch (e) {
                     console.error('Initialization failed:', e);
