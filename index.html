@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Goal Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main-wrapper {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1400px;
+            height: 90vh;
+            overflow: hidden;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 50px;
+            width: 600px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .slider-group {
+            margin-bottom: 30px;
+        }
+
+        .slider-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            display: block;
+            cursor: pointer;
+            transition: color 0.3s;
+            user-select: none;
+        }
+
+        .slider-label:hover {
+            color: #667eea;
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: center;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e0e0e0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            transition: all 0.2s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.3);
+            transition: all 0.2s;
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        .percentage-label {
+            min-width: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.2);
+        }
+
+        /* Custom range track styling */
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: linear-gradient(to right, #e0e0e0 0%, #e0e0e0 100%);
+            height: 8px;
+            border-radius: 5px;
+        }
+
+        input[type="range"]::-moz-range-track {
+            background: #e0e0e0;
+            height: 8px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        .datalist {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+            color: #999;
+            padding: 0 5px;
+        }
+
+        .datalist span {
+            position: relative;
+        }
+
+        /* Progress Panel */
+        .progress-panel {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            width: 900px;
+            height: calc(90vh - 100px);
+            overflow-y: auto;
+            flex-shrink: 0;
+            display: none;
+            flex-direction: column;
+            position: fixed;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 500;
+        }
+
+        .progress-panel.active {
+            display: flex;
+        }
+
+        .progress-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .progress-panel-header h2 {
+            font-size: 24px;
+            color: #333;
+            margin: 0;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        .progress-bar-container {
+            margin-bottom: 30px;
+        }
+
+        .progress-bar-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #e0e0e0;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 600;
+            transition: width 0.3s ease;
+        }
+
+        .table-container {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .table-header h3 {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .btn-delete {
+            background: #ff6b6b;
+            color: white;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        .btn-delete:hover {
+            background: #ff5252;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th {
+            background: #f9f9f9;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        td input {
+            width: 100%;
+            padding: 6px 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        td input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state p {
+            margin-bottom: 15px;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .modal-body {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .modal-body input {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .modal-body input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+        }
+
+        .modal-footer {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        /* Save button */
+        .save-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.3);
+            transition: all 0.3s;
+            z-index: 600;
+        }
+
+        .save-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .save-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #4caf50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 2000;
+        }
+
+        .save-notification.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-wrapper {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .container {
+                width: 100%;
+                max-height: none;
+            }
+
+            .progress-panel {
+                position: static;
+                transform: none;
+                width: 100%;
+                height: auto;
+                max-height: 85vh;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .logo {
+                width: 40px;
+                height: 40px;
+                font-size: 22px;
+            }
+
+            .slider-container {
+                gap: 10px;
+            }
+
+            .percentage-label {
+                min-width: 50px;
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .save-btn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px 24px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="save-btn" id="saveBtn">💾 Save All</button>
+    <div class="save-notification" id="saveNotification">✓ Data saved successfully!</div>
+
+    <div class="main-wrapper">
+        <div class="container">
+        <div class="header">
+            <div class="logo">📊</div>
+            <h1>Goal Tracker</h1>
+        </div>
+
+        <div class="slider-group">
+            <label class="slider-label">Algorithms</label>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" id="algorithms" min="0" max="100" value="0">
+                </div>
+                <div class="percentage-label" id="algorithms-label">0%</div>
+            </div>
+            <div class="datalist">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+            </div>
+        </div>
+
+        <div class="slider-group">
+            <label class="slider-label">Data Structures</label>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" id="dataStructures" min="0" max="100" value="0">
+                </div>
+                <div class="percentage-label" id="dataStructures-label">0%</div>
+            </div>
+            <div class="datalist">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+            </div>
+        </div>
+
+        <div class="slider-group">
+            <label class="slider-label">Low Level Design</label>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" id="lowLevelDesign" min="0" max="100" value="0">
+                </div>
+                <div class="percentage-label" id="lowLevelDesign-label">0%</div>
+            </div>
+            <div class="datalist">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+            </div>
+        </div>
+
+        <div class="slider-group">
+            <label class="slider-label">High Level Design</label>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" id="highLevelDesign" min="0" max="100" value="0">
+                </div>
+                <div class="percentage-label" id="highLevelDesign-label">0%</div>
+            </div>
+            <div class="datalist">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+            </div>
+        </div>
+
+        <div class="slider-group">
+            <label class="slider-label">Kubernetes</label>
+            <div class="slider-container">
+                <div class="slider-wrapper">
+                    <input type="range" id="kubernetes" min="0" max="100" value="0">
+                </div>
+                <div class="percentage-label" id="kubernetes-label">0%</div>
+            </div>
+            <div class="datalist">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Panel -->
+    <div class="progress-panel" id="progressPanel">
+        <div class="progress-panel-header">
+            <h2 id="panelTitle">Algorithms</h2>
+            <button class="close-btn" id="closePanelBtn">✕</button>
+        </div>
+
+        <div class="progress-bar-container">
+            <div class="progress-bar-label">Overall Progress</div>
+            <div class="progress-bar">
+                <div class="progress-bar-fill" id="progressBarFill" style="width: 0%;">0%</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <div class="table-header">
+                <h3>Daily Progress</h3>
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="addRowBtn">+ Add Row</button>
+                    <button class="btn btn-secondary" id="addColBtn">+ Add Column</button>
+                </div>
+            </div>
+
+            <div id="tableWrapper">
+                <div class="empty-state">
+                    <p>No progress entries yet</p>
+                    <p>Click "Add Row" to get started</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Column Dialog Modal -->
+    <div class="modal" id="columnModal">
+        <div class="modal-content">
+            <div class="modal-header">Add New Column</div>
+            <div class="modal-body">
+                <input type="text" id="columnNameInput" placeholder="Column name" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-cancel" id="cancelColBtn">Cancel</button>
+                <button class="btn btn-primary btn-save" id="confirmColBtn">Add</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // State Management
+        const state = {
+            sliders: {
+                algorithms: 0,
+                dataStructures: 0,
+                lowLevelDesign: 0,
+                highLevelDesign: 0,
+                kubernetes: 0
+            },
+            progressData: {
+                algorithms: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                dataStructures: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                lowLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                highLevelDesign: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] },
+                kubernetes: { columns: ['Date', 'Hours Studied', 'Topics'], rows: [] }
+            },
+            currentPanel: null
+        };
+
+        // UI Elements
+        const sliders = [
+            { id: 'algorithms', labelId: 'algorithms-label', name: 'Algorithms' },
+            { id: 'dataStructures', labelId: 'dataStructures-label', name: 'Data Structures' },
+            { id: 'lowLevelDesign', labelId: 'lowLevelDesign-label', name: 'Low Level Design' },
+            { id: 'highLevelDesign', labelId: 'highLevelDesign-label', name: 'High Level Design' },
+            { id: 'kubernetes', labelId: 'kubernetes-label', name: 'Kubernetes' }
+        ];
+
+        const progressPanel = document.getElementById('progressPanel');
+        const panelTitle = document.getElementById('panelTitle');
+        const progressBarFill = document.getElementById('progressBarFill');
+        const tableWrapper = document.getElementById('tableWrapper');
+        const addRowBtn = document.getElementById('addRowBtn');
+        const addColBtn = document.getElementById('addColBtn');
+        const closePanelBtn = document.getElementById('closePanelBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const saveNotification = document.getElementById('saveNotification');
+        const columnModal = document.getElementById('columnModal');
+        const columnNameInput = document.getElementById('columnNameInput');
+        const confirmColBtn = document.getElementById('confirmColBtn');
+        const cancelColBtn = document.getElementById('cancelColBtn');
+
+        // Initialize Sliders
+        sliders.forEach(slider => {
+            const element = document.getElementById(slider.id);
+            const labelElement = document.getElementById(slider.labelId);
+            const sliderLabel = labelElement.parentElement.parentElement.querySelector('.slider-label');
+
+            // Update label on input
+            element.addEventListener('input', function() {
+                labelElement.textContent = this.value + '%';
+                state.sliders[slider.id] = parseInt(this.value);
+                updateSliderBackground(this);
+                
+                // Update progress bar if panel is open for this slider
+                if (state.currentPanel === slider.id) {
+                    const percentage = parseInt(this.value);
+                    progressBarFill.style.width = percentage + '%';
+                    progressBarFill.textContent = percentage + '%';
+                }
+            });
+
+            // Click on title to open panel
+            sliderLabel.addEventListener('click', function() {
+                openProgressPanel(slider.id, slider.name);
+            });
+
+            // Initialize
+            updateSliderBackground(element);
+        });
+
+        // Update slider background gradient
+        function updateSliderBackground(slider) {
+            const value = (slider.value - slider.min) / (slider.max - slider.min) * 100;
+            slider.style.background = `linear-gradient(to right, #667eea 0%, #764ba2 ${value}%, #e0e0e0 ${value}%, #e0e0e0 100%)`;
+        }
+
+        // Progress Panel Functions
+        function openProgressPanel(sliderId, sliderName) {
+            state.currentPanel = sliderId;
+            panelTitle.textContent = sliderName;
+            progressPanel.classList.add('active');
+
+            // Update progress bar
+            const percentage = state.sliders[sliderId];
+            progressBarFill.style.width = percentage + '%';
+            progressBarFill.textContent = percentage + '%';
+
+            // Render table
+            renderTable();
+        }
+
+        function closeProgressPanel() {
+            progressPanel.classList.remove('active');
+            state.currentPanel = null;
+        }
+
+        function renderTable() {
+            if (!state.currentPanel) return;
+
+            const data = state.progressData[state.currentPanel];
+            tableWrapper.innerHTML = '';
+
+            if (data.rows.length === 0) {
+                tableWrapper.innerHTML = `
+                    <div class="empty-state">
+                        <p>No progress entries yet</p>
+                        <p>Click "Add Row" to get started</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const table = document.createElement('table');
+            
+            // Header
+            const headerRow = document.createElement('tr');
+            data.columns.forEach(col => {
+                const th = document.createElement('th');
+                th.textContent = col;
+                headerRow.appendChild(th);
+            });
+            const actionTh = document.createElement('th');
+            actionTh.textContent = 'Action';
+            headerRow.appendChild(actionTh);
+            table.appendChild(headerRow);
+
+            // Rows
+            data.rows.forEach((row, rowIndex) => {
+                const tr = document.createElement('tr');
+                row.forEach((cell, colIndex) => {
+                    const td = document.createElement('td');
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = cell;
+                    input.addEventListener('change', (e) => {
+                        data.rows[rowIndex][colIndex] = e.target.value;
+                    });
+                    td.appendChild(input);
+                    tr.appendChild(td);
+                });
+
+                const actionTd = document.createElement('td');
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn btn-delete';
+                deleteBtn.textContent = '🗑️ Delete';
+                deleteBtn.addEventListener('click', () => {
+                    data.rows.splice(rowIndex, 1);
+                    renderTable();
+                });
+                actionTd.appendChild(deleteBtn);
+                tr.appendChild(actionTd);
+
+                table.appendChild(tr);
+            });
+
+            tableWrapper.appendChild(table);
+        }
+
+        // Add Row
+        addRowBtn.addEventListener('click', () => {
+            if (!state.currentPanel) return;
+            const data = state.progressData[state.currentPanel];
+            const newRow = new Array(data.columns.length).fill('');
+            data.rows.push(newRow);
+            renderTable();
+        });
+
+        // Add Column
+        addColBtn.addEventListener('click', () => {
+            columnModal.classList.add('active');
+            columnNameInput.value = '';
+            columnNameInput.focus();
+        });
+
+        confirmColBtn.addEventListener('click', () => {
+            const columnName = columnNameInput.value.trim();
+            if (!columnName || !state.currentPanel) {
+                alert('Please enter a column name');
+                return;
+            }
+
+            const data = state.progressData[state.currentPanel];
+            data.columns.push(columnName);
+            data.rows.forEach(row => row.push(''));
+            
+            columnModal.classList.remove('active');
+            renderTable();
+        });
+
+        cancelColBtn.addEventListener('click', () => {
+            columnModal.classList.remove('active');
+        });
+
+        columnNameInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                confirmColBtn.click();
+            }
+        });
+
+        // Close Panel
+        closePanelBtn.addEventListener('click', closeProgressPanel);
+
+        // IndexedDB Setup
+        let db;
+        const dbName = 'GoalTrackerDB';
+        const storeName = 'trackerData';
+
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(dbName, 1);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve();
+                };
+
+                request.onupgradeneeded = (event) => {
+                    const database = event.target.result;
+                    if (!database.objectStoreNames.contains(storeName)) {
+                        database.createObjectStore(storeName);
+                    }
+                };
+            });
+        }
+
+        // Save All Data using IndexedDB
+        function saveAllData() {
+            if (!db) return;
+
+            const dataToSave = {
+                sliders: state.sliders,
+                progressData: state.progressData,
+                timestamp: new Date().toISOString()
+            };
+
+            const transaction = db.transaction([storeName], 'readwrite');
+            const objectStore = transaction.objectStore(storeName);
+            const request = objectStore.put(dataToSave, 'goalTrackerData');
+
+            request.onsuccess = () => {
+                // Show notification
+                saveNotification.classList.add('show');
+                setTimeout(() => {
+                    saveNotification.classList.remove('show');
+                }, 3000);
+            };
+
+            request.onerror = () => {
+                console.error('Failed to save data:', request.error);
+            };
+        }
+
+        saveBtn.addEventListener('click', saveAllData);
+
+        // Load Data from IndexedDB
+        function loadAllData() {
+            if (!db) return;
+
+            const transaction = db.transaction([storeName], 'readonly');
+            const objectStore = transaction.objectStore(storeName);
+            const request = objectStore.get('goalTrackerData');
+
+            request.onsuccess = () => {
+                const data = request.result;
+                if (data) {
+                    try {
+                        state.sliders = data.sliders || state.sliders;
+                        state.progressData = data.progressData || state.progressData;
+
+                        // Update UI
+                        sliders.forEach(slider => {
+                            const element = document.getElementById(slider.id);
+                            const labelElement = document.getElementById(slider.labelId);
+                            element.value = state.sliders[slider.id];
+                            labelElement.textContent = state.sliders[slider.id] + '%';
+                            updateSliderBackground(element);
+                        });
+                    } catch (e) {
+                        console.error('Failed to parse data:', e);
+                    }
+                }
+            };
+
+            request.onerror = () => {
+                console.error('Failed to load data:', request.error);
+            };
+        }
+
+        // Auto-save on unload
+        window.addEventListener('beforeunload', saveAllData);
+
+        // Initialize DB and Load on page load
+        window.addEventListener('load', async () => {
+            try {
+                await initDB();
+                loadAllData();
+            } catch (e) {
+                console.error('Failed to initialize database:', e);
+            }
+        });
+
+        // Close modal when clicking outside
+        columnModal.addEventListener('click', (e) => {
+            if (e.target === columnModal) {
+                columnModal.classList.remove('active');
+            }
+        });
+
+        // Close panel when clicking outside
+        progressPanel.addEventListener('click', (e) => {
+            if (e.target === progressPanel) {
+                closeProgressPanel();
+            }
+        });
+    </script>
+</body>
+</html>
