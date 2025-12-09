@@ -1171,21 +1171,32 @@
                 }
 
                 try {
-                    const progressDataForFirestore = {};
-                    for (const key in state.progressData) {
-                        const section = state.progressData[key];
-                        progressDataForFirestore[key] = {
-                            columns: section.columns,
-                            rows: convertRowsToObjects(section.rows)
+                    // Save all profiles to Firestore
+                    const allProfilesData = {};
+                    for (const profileName in profiles) {
+                        const profile = profiles[profileName];
+                        const progressDataForFirestore = {};
+                        
+                        for (const key in profile.progressData) {
+                            const section = profile.progressData[key];
+                            progressDataForFirestore[key] = {
+                                columns: section.columns,
+                                rows: convertRowsToObjects(section.rows)
+                            };
+                        }
+                        
+                        allProfilesData[profileName] = {
+                            sliders: profile.sliders,
+                            progressData: progressDataForFirestore
                         };
                     }
                     
-                    await setDoc(doc(collection(db, "goalTracker"), currentProfile), {
-                        sliders: state.sliders,
-                        progressData: progressDataForFirestore,
+                    await setDoc(doc(collection(db, "goalTracker"), "allProfiles"), {
+                        profiles: allProfilesData,
+                        currentProfile: currentProfile,
                         timestamp: new Date().toISOString()
                     });
-                    console.log("✓ Firestore save successful");
+                    console.log("✓ Firestore save successful (all profiles)");
                 } catch (error) {
                     console.error("✗ Firestore save failed (localStorage active):", error);
                 }
@@ -1198,36 +1209,47 @@
                 let dataLoaded = false;
                 
                 try {
-                    const docRef = doc(collection(db, "goalTracker"), currentProfile);
+                    const docRef = doc(collection(db, "goalTracker"), "allProfiles");
                     const docSnap = await getDoc(docRef);
                     
                     if (docSnap.exists()) {
                         const data = docSnap.data();
-                        state.sliders = data.sliders || state.sliders;
                         
-                        if (data.progressData) {
-                            for (const key in defaultProgressData) {
-                                if (data.progressData[key]) {
-                                    const section = data.progressData[key];
-                                    section.columns = section.columns || defaultProgressData[key].columns;
-                                    section.rows = convertRowsToArrays(section.rows || []);
-                                    state.progressData[key] = section;
-                                } else {
-                                    state.progressData[key] = defaultProgressData[key];
+                        // Load all profiles from Firestore
+                        if (data.profiles) {
+                            for (const profileName in data.profiles) {
+                                const profileData = data.profiles[profileName];
+                                const convertedProgressData = {};
+                                
+                                for (const key in profileData.progressData) {
+                                    const section = profileData.progressData[key];
+                                    convertedProgressData[key] = {
+                                        columns: section.columns || defaultProgressData[key].columns,
+                                        rows: convertRowsToArrays(section.rows || [])
+                                    };
                                 }
+                                
+                                profiles[profileName] = {
+                                    sliders: profileData.sliders,
+                                    progressData: convertedProgressData
+                                };
                             }
-                        } else {
-                            state.progressData = defaultProgressData;
+                            
+                            localStorage.setItem('goalTrackerProfiles', JSON.stringify(profiles));
                         }
                         
-                        profiles[currentProfile] = {
-                            sliders: { ...state.sliders },
-                            progressData: JSON.parse(JSON.stringify(state.progressData))
-                        };
-                        localStorage.setItem('goalTrackerProfiles', JSON.stringify(profiles));
+                        // Restore current profile from Firestore or use saved one
+                        if (data.currentProfile && profiles[data.currentProfile]) {
+                            currentProfile = data.currentProfile;
+                            localStorage.setItem('goalTrackerCurrentProfile', currentProfile);
+                        }
+                        
+                        // Update state with current profile data
+                        state.sliders = { ...profiles[currentProfile].sliders };
+                        state.progressData = JSON.parse(JSON.stringify(profiles[currentProfile].progressData));
                         
                         dataLoaded = true;
-                        console.log("✓ Firestore load successful");
+                        console.log("✓ Firestore load successful (all profiles)");
                     }
                 } catch (error) {
                     console.error("✗ Firestore load failed, using localStorage:", error);
@@ -1277,8 +1299,8 @@
             window.addEventListener('beforeunload', saveAllData);
             window.addEventListener('load', async () => {
                 try {
-                    loadProfilesList();
                     await loadAllData();
+                    loadProfilesList();
                 } catch (e) {
                     console.error('Initialization failed:', e);
                 }
